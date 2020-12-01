@@ -1,1 +1,3 @@
-FROM k8s.gcr.io/ingress-nginx/controller:v0.41.0
+FROM golang
+RUN git clone https://github.com/rancher/rancher.git
+RUN cd rancher && go get ./... && go build
