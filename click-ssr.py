@@ -6,7 +6,7 @@ import os
 import re
 
 opt = webdriver.ChromeOptions()  # 创建浏览器
-opt.add_argument('--headless')   #无窗口模式
+#opt.add_argument('--headless')   #无窗口模式
 opt.add_argument('--no-sandbox')
 opt.add_argument('--disable-gpu')
 opt.add_argument('--disable-dev-shm-usage')
