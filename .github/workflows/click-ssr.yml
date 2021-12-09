@@ -37,10 +37,6 @@ jobs:
        echo '${{ github.event.inputs.PackageVersion }}'
        echo "${{ github.event.inputs.Skipcheck_Result }}"
        
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.inputs.PackageVersion }}
         
 
     - name: Get workpath
