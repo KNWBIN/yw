@@ -1,33 +1,61 @@
-name: CI
+name: Build Rancher Server
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      PackageVersion:
+# 测试通过v2.5.9-v2.5.11,v2.4.16-v2.4.17
+        description: 'Select Build Rancher version'     
+        required: true
+        default: 'v2.4.17'
+      Skipcheck_Result:
+        description: 'Select skip validate and test(true|false)'     
+        required: true
+        default: 'true'
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2.2.2
-        with:
-         python-version: 3.7
-        
-      # Runs a single command using the runners shell
-      - name: install pkg and pip module
-        run: |
-         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-         sudo apt install ./google-chrome-stable_current_amd64.deb
-         wget https://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip
-         unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/sbin/
-         pip3 install selenium
-         pip install pyperclip
+    - uses: actions/checkout@v2
 
-      # Runs a set of commands using the runners shell
-      - name: Run python script
-        run: |
-          python3.7 click-ssr.py
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.16
+        
+ #   - name: Dump GitHub context
+ #     env:
+ #       packageName: v2.5.9
+      #run: echo "::set-env name=packageName::v1.18.2"
+      #run: echo '${{ env.packageName }}'
+ #     run: echo "packageName=${{ env.packageName }}" >> $GITHUB_ENV
+
+    - name: Get Input Rancher Version And Select skip ci Result
+      run: |
+       echo '${{ github.event.inputs.PackageVersion }}'
+       echo "${{ github.event.inputs.Skipcheck_Result }}"
+       
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.inputs.PackageVersion }}
+        
+
+    - name: Get workpath
+      run: |
+       pwd
+       who -b
+       hostname
+
+
+
+    - name: Modify validata for v2.5.x
+      if: github.event.inputs.PackageVersion == "v2.5.*"
+      run: |
+        echo ${{ github.event.inputs.PackageVersion }}
+
+
+      
+
