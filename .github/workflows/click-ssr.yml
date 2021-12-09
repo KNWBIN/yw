@@ -46,9 +46,22 @@ jobs:
        hostname
 
 
+    - name: Check Tag
+      id: check-tag
+      run: |
+        if [[ ${{ github.event.ref }} =~ ^refs/tags/v2.5+\.[0-9]+$ ]]; then
+            echo ::set-output name=match::true
+          fi
+          
+    - name: Build
+      if: steps.check-tag.outputs.match == 'true'
+      run: |
+        echo "Tag is a match"
+          echo "Tag is a match"
+
 
     - name: Modify validata for v2.5.x
-      if: github.event.inputs.PackageVersion ~= "v2.5.*"
+      if: github.event.inputs.PackageVersion == "v2.5.*"
       run: |
         echo ${{ github.event.inputs.PackageVersion }}
 
