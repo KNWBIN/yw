@@ -57,13 +57,6 @@ jobs:
       if: steps.check-tag.outputs.match == 'true'
       run: |
         echo "Tag is a match"
-          echo "Tag is a match"
-
-
-    - name: Modify validata for v2.5.x
-      if: github.event.inputs.PackageVersion == "v2.5.*"
-      run: |
-        echo ${{ github.event.inputs.PackageVersion }}
 
 
       
