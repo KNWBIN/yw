@@ -48,7 +48,7 @@ jobs:
 
 
     - name: Modify validata for v2.5.x
-      if: github.event.inputs.PackageVersion == "v2.5.*"
+      if: github.event.inputs.PackageVersion =~ "v2.5.*"
       run: |
         echo ${{ github.event.inputs.PackageVersion }}
 
